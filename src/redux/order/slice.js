@@ -23,7 +23,15 @@ const orderSlice = createSlice({
         (sum, item) => sum + item.price * item.amount,
         0
       );
-      state.createdAt = new Date();
+      state.createdAt = new Date().toISOString();
+    },
+    deletePosition(state, action) {
+      state.cart = state.cart.filter((pos) => pos._id !== action.payload);
+      state.totalPrice = state.cart.reduce(
+        (sum, item) => sum + item.price * item.amount,
+        0
+      );
+      state.createdAt = new Date().toISOString();
     },
     clearCart(state) {
       state.cart = [];
