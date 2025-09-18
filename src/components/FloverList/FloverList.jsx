@@ -1,22 +1,39 @@
 import styles from "./FloverList.module.css";
 import FlowerCard from "../FlowerCard/FlowerCard";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getFlowers } from "../../redux/flowers/operations";
+import { getHits } from "../../redux/flowers/selectors";
+import { useParams, useSearchParams } from "react-router";
+import LoadMore from "../LoadMore/LoadMore";
 
 export default function FloverList() {
-  const test = {
-    _id: "01422c349916755dd7563b46",
-    name: "Elegant Whites",
-    description: "A sophisticated arrangement of white lilies and roses.",
-    price: 398,
-    image:
-      "https://images.unsplash.com/photo-1648628333496-f812bce25f5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDI2Njl8MHwxfHNlYXJjaHw0NXx8Ym91cXVldHN8ZW58MXwwfHx8MTc1NzUzMzE1Nnww&ixlib=rb-4.1.0&q=80&w=400",
-    category: "bouquets",
-    productionDate: "2025-09-04T00:38:12.234Z",
-    shopName: "Rose Garden Emporium",
-  };
+  const flowers = useSelector(getHits);
+
+  const dispatch = useDispatch();
+  const { shopName } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const patch = shopName ? `/flowers/${shopName}` : "/flowers";
+
+  useEffect(() => {
+    dispatch(
+      getFlowers({
+        patch,
+        searchParams,
+      })
+    );
+  }, [dispatch, patch, searchParams]);
 
   return (
     <div className={styles.container}>
-      <FlowerCard flower={test} />
+      <div className={styles.wrapper}>
+        <ul className={styles.flowersList}>
+          {flowers.map((flower) => {
+            return <FlowerCard flower={flower} key={flower._id} />;
+          })}
+        </ul>
+        <LoadMore />
+      </div>
     </div>
   );
 }

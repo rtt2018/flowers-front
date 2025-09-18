@@ -10,7 +10,7 @@ export default function FlowerCard({ flower }) {
     evt.preventDefault();
     dispatch(
       addPositionToCart({
-        _id: flower._id,
+        flower,
         price: flower.price,
         amount: 1,
       })
@@ -18,22 +18,24 @@ export default function FlowerCard({ flower }) {
   };
 
   return (
-    <div className={styles.container}>
+    <li className={styles.container}>
       <div className={styles.wrapper}>
-        <div className={styles.thumb}>
-          <img
-            className={styles.flowerImage}
-            src={flower.image}
-            alt={flower.name}
-          />
+        <div>
+          <div className={styles.thumb}>
+            <img
+              className={styles.flowerImage}
+              src={flower.image}
+              alt={flower.name}
+            />
+          </div>
+          <h3 className={styles.flowerHeader}>{flower.name}</h3>
+          <p className={styles.descr}>{flower.description}</p>
+          <p className={styles.descr}>
+            Shop: <span className={styles.bold}>{flower.shopName}</span>
+          </p>
         </div>
-        <h3 className={styles.flowerHeader}>{flower.name}</h3>
-        <p className={styles.descr}>{flower.description}</p>
-        <p className={styles.descr}>
-          Shop: <span className={styles.bold}>{flower.shopName}</span>
-        </p>
         <div className={styles.cartButtonWrapper}>
-          <p>
+          <p className={styles.descr}>
             Price: <span className={styles.bold}>{flower.price}</span> money
           </p>
           <button
@@ -45,6 +47,6 @@ export default function FlowerCard({ flower }) {
           </button>
         </div>
       </div>
-    </div>
+    </li>
   );
 }

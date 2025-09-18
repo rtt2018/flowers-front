@@ -1,20 +1,22 @@
 import axios from "axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
 
-axios.defaults.baseURL = "https://flowers-back-0xk7.onrender.com";
+const api = axios.create({
+  baseURL: "https://flowers-back-0xk7.onrender.com/",
+  timeout: 5000,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-export const getFlowers = createAsyncThunk(
-  "flowers/getAll",
-  async (searchParams, thunkAPI) => {
-    try {
-      const response = axios.get("/", {
-        params: searchParams,
-      });
-      return response.data;
-    } catch (error) {
-      thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
-// треба перевірку на бекові чи є такий магазин у списку
+export default api;

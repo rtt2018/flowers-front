@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   cart: [],
   totalPrice: 0,
-  status: "pending",
+  status: "creating",
   creadetAt: null,
 };
 
@@ -12,25 +12,30 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     addPositionToCart(state, action) {
-      const itemAvaible = state.cart.find((item) => item._id === action._id);
+      const { flower, amount } = action.payload;
 
-      if (itemAvaible) {
-        itemAvaible.amount += 1;
-      } else {
-        state.cart.push(action.payload);
-      }
-      state.totalPrice = state.cart.reduce(
-        (sum, item) => sum + item.price * item.amount,
-        0
+      const existingItem = state.cart.find(
+        (item) => item.flower._id === flower._id
       );
+
+      if (existingItem) {
+        existingItem.amount += amount;
+      } else {
+        state.cart.push({ flower, amount });
+      }
+      state.totalPrice = state.cart.reduce((sum, item) => {
+        return sum + Number(item.flower.price) * Number(item.amount);
+      }, 0);
+
       state.createdAt = new Date().toISOString();
     },
     deletePosition(state, action) {
-      state.cart = state.cart.filter((pos) => pos._id !== action.payload);
-      state.totalPrice = state.cart.reduce(
-        (sum, item) => sum + item.price * item.amount,
-        0
+      state.cart = state.cart.filter(
+        (pos) => pos.flower._id !== action.payload.flower._id
       );
+      state.totalPrice = state.cart.reduce((sum, item) => {
+        return sum + Number(item.flower.price) * Number(item.amount);
+      }, 0);
       state.createdAt = new Date().toISOString();
     },
     clearCart(state) {
@@ -38,13 +43,39 @@ const orderSlice = createSlice({
       state.totalPrice = 0;
       state.creadetAt = null;
     },
+    upPositionCount(state, action) {
+      state.cart = state.cart.map((item) =>
+        item.flower._id === action.payload.flower._id
+          ? { ...item, amount: Number(item.amount) + 1 }
+          : item
+      );
+      state.totalPrice = state.cart.reduce((sum, item) => {
+        return sum + Number(item.flower.price) * Number(item.amount);
+      }, 0);
+    },
+    downPositionCount(state, action) {
+      state.cart = state.cart.map((item) =>
+        item.flower._id === action.payload.flower._id
+          ? {
+              ...item,
+              amount:
+                Number(item.amount) > 1 ? Number(item.amount) - 1 : item.amount,
+            }
+          : item
+      );
+      state.totalPrice = state.cart.reduce((sum, item) => {
+        return sum + Number(item.flower.price) * Number(item.amount);
+      }, 0);
+    },
   },
-  extraReducers: (builder) =>
-    builder.addCase(addPositionToCart, (state, action) => {
-      state.cart.push(action.payload);
-    }),
 });
 
 export const orderReducer = orderSlice.reducer;
 
-export const { addPositionToCart, clearCart } = orderSlice.actions;
+export const {
+  addPositionToCart,
+  clearCart,
+  upPositionCount,
+  downPositionCount,
+  deletePosition,
+} = orderSlice.actions;

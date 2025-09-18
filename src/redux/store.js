@@ -13,6 +13,8 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { shopsReducer } from "./shops/slice.js";
+import { ordersListReducer } from "./orders/slice.js";
 
 const authPersistConfig = {
   key: "user",
@@ -23,7 +25,7 @@ const authPersistConfig = {
 const cartPersistConfig = {
   key: "order",
   storage,
-  whitelist: ["cart"],
+  // whitelist: ["cart, totalPrice"],
 };
 
 export const store = configureStore({
@@ -31,6 +33,8 @@ export const store = configureStore({
     user: persistReducer(authPersistConfig, userReducer),
     flowers: flowersReducer,
     order: persistReducer(cartPersistConfig, orderReducer),
+    shops: shopsReducer,
+    orders: ordersListReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

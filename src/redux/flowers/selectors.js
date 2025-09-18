@@ -1,0 +1,11 @@
+export const getHits = (state) => state.flowers.hits;
+export const getPage = (state) => state.flowers.page;
+export const getPerPage = (state) => state.flowers.perPage;
+export const getTotalPages = (state) => state.flowers.totalPages;
+export const getHasPreviousPage = (state) => state.flowers.hasPreviousPage;
+export const getHasNextPage = (state) => state.flowers.hasNextPage;
+export const getTotalItems = (state) => state.flowers.totalItems;
+export const getSortBy = (state) => state.flowers.sortBy;
+export const getSortOrder = (state) => state.flowers.sortOrder;
+export const getIsLoading = (state) => state.flowers.isLoading;
+export const getIsError = (state) => state.flowers.isError;
