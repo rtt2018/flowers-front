@@ -3,11 +3,10 @@ import api from "../../api/api";
 
 export const getOrders = createAsyncThunk(
   "orders/getAllOrders",
-  async ({ patch, params }, thunkAPI) => {
+  async (reqParams, thunkAPI) => {
+    const { patch, params } = reqParams;
     try {
-      const response = await api.get(patch, {
-        params,
-      });
+      const response = await api.post(patch, params);
       console.log("🚀 ~ response:", response);
       return response.data.data;
     } catch (error) {

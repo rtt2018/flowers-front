@@ -33,9 +33,10 @@ const orderSlice = createSlice({
       state.cart = state.cart.filter(
         (pos) => pos.flower._id !== action.payload.flower._id
       );
-      state.totalPrice = state.cart.reduce((sum, item) => {
-        return sum + Number(item.flower.price) * Number(item.amount);
-      }, 0);
+      state.totalPrice = state.cart.reduce(
+        (sum, item) => sum + Number(item.flower.price) * Number(item.amount),
+        0
+      );
       state.createdAt = new Date().toISOString();
     },
     clearCart(state) {
