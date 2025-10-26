@@ -79,6 +79,7 @@
   height: 470px;
   overflow: hidden;
   overflow-y: auto;
+  padding: 0 32px;
 }
 
 .fieldWrapper {

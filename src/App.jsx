@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import Cart from "./pages/Cart/Cart";
 import Orders from "./pages/Orders/Orders";
 import Order from "./pages/Order/Order";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/:orderId" element={<Order />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

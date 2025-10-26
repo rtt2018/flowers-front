@@ -3,10 +3,6 @@ import { getOrders } from "./operations";
 
 const initialState = {
   orders: [],
-  user: {
-    name: "",
-    email: "",
-  },
   isLoading: false,
   isError: false,
   isSendRequest: false,
@@ -22,9 +18,6 @@ const ordersListSlice = createSlice({
     },
     setIsSendRequest(state, action) {
       state.isSendRequest = action.payload;
-    },
-    setUserEmail(state, action) {
-      state.user.email = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -48,5 +41,4 @@ const ordersListSlice = createSlice({
 
 export const ordersListReducer = ordersListSlice.reducer;
 
-export const { addCreatedOrder, setIsSendRequest, setUserEmail } =
-  ordersListSlice.actions;
+export const { addCreatedOrder, setIsSendRequest } = ordersListSlice.actions;
